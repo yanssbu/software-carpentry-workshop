@@ -7,11 +7,13 @@ def change_to_celsius(x):
     degree = (x-32)*5/9
     return degree
 
-def analyze(data):
+def analyze(data, figure_filename):
     '''perform analysis on mosquito data
     
        data is a DataFrame with columns 'temperature', 'rainfall' and 'mosquitos'.
-       Performs a least squares regression, plots the result and returns the fit parameters'''
+       Performs a least squares regression, plots the result and returns the fit parameters
+       
+       Figure_filename is the name of output plot'''
     
     assert data['temperature'].max() < 70, 'check the input temp is less than 70'
     regr_results = sm.OLS.from_formula('mosquitos ~ temperature + rainfall', data).fit()
@@ -21,6 +23,7 @@ def analyze(data):
     plt.plot(predicted, data['mosquitos'], 'ro')
     min_mosquitos, max_mosquitos = min(data['mosquitos']), max(data['mosquitos'])
     plt.plot([min_mosquitos, max_mosquitos], [min_mosquitos, max_mosquitos], 'k-')
-    plt.show() # use this to show multi figures
+    #plt.show() # use this to show multi figures # stop the script here and show the plot, when the user close the plot, go forward
+    plt.savefig(figure_filename)
     
     return parameters
